@@ -15,12 +15,34 @@
       class="mb-5"
       style="width: 500px"
     />
+    <v-btn
+        color="blue"
+        @click="formClick"
+        type="button"
+        x-large
+    >
+      CLICK!
+    </v-btn>
   </v-form>
 </template>
 
 <script>
   export default {
     name: 'InputForm',
+
+    props: {
+      formRounded: {
+        type: String,
+        required: false,
+        default: 'sm',
+      },
+      formElevation: {
+        type: String,
+        required: false,
+        default: '1',
+      },
+    },
+
 		data () {
 			return {
 				movieUrl: "",
@@ -51,6 +73,37 @@
           this.movieErrorMessages = []
         }
       }
-    }
+    },
+
+    methods: {
+      formClick () {
+        // バリデーションを強制実行
+        this.validateMovieUrl(this.movieUrl)
+        const validateComment = this.$refs.form.validate()
+        // フォームにエラーがなければ、動画保存処理を実行
+        if (this.movieErrorMessages.length === 0 && validateComment) {
+          this.$emit('storeMovie', this.movieUrl, this.comment)
+        }
+      },
+
+      validateMovieUrl (value) {
+        const stringValidation = /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/.test(value)
+        if (!value) {
+          this.movieErrorMessages = [
+            '入力してください',
+          ]
+        } else if (value.length !== 11) {
+          this.movieErrorMessages = [
+            '11文字で入力してください',
+          ]
+        } else if (!stringValidation) {
+          this.movieErrorMessages = [
+            '半角英数記号で入力してください',
+          ]
+        } else {
+          this.movieErrorMessages = []
+        }
+      },
+    },
   }
 </script>

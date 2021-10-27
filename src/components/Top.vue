@@ -1,25 +1,31 @@
 <template>
    <v-container>
-        <v-card
-           class="my-10"
-           elevation="10"
-           rounded="xl"
-           width="100%"
-        >
-           <v-container class="mx-10 text-center" >
-               <input-form />
-            </v-container>
-        </v-card>
+    <input-form
+      formRounded="xl"
+      :formElevation="formElevation"
+      @storeMovie="storeMovie"
+    />
     </v-container>
 </template>
 
 <script>
-    import InputForm from './InputForm.vue'
+  import InputForm from './InputForm.vue'
 
-    export default {
-      name: 'Top',
-      components: {
-        InputForm,
+  export default {
+    components: {
+      InputForm,
+    },
+
+    data () {
+      return {
+        formElevation: "10",
+      }
+    },
+
+    methods: {
+      storeMovie (movieUrl, comment) {
+        console.log(movieUrl, comment)
       },
-    }
+    },
+  }
 </script>
